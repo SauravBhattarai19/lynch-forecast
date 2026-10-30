@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lynch-forecast"
+version = "0.1.0"
+description = "Live flood forecast for Lynch Creek (Jackson, Mississippi), built on the MRRpy model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+# The hydrology and hydraulics are MRRpy's. The forecast needs an MRRpy with
+# restart files, Open-Meteo rain and 2-D flood maps: the forecast-support branch
+# has all three (until they reach a release).
+dependencies = [
+    "MRRpy @ git+https://github.com/SauravBhattarai19/MRRpy.git@forecast-support",
+    "pyyaml", "pandas", "numpy",
+]
+
+[project.optional-dependencies]
+setup = ["earthengine-api"]   # Earth Engine, for 'lynch-forecast setup' only
+test = ["pytest>=7"]
+
+[project.scripts]
+lynch-forecast = "lynch_forecast.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["lynch_forecast*"]
+
+[tool.setuptools.package-data]
+lynch_forecast = ["web/*", "web/design/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

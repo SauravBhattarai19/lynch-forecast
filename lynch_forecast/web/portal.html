@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flood forecasts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="index.html">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect width="30" height="30" rx="7" fill="#1d6fb8"/>
+        <path d="M5 11c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 17c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 23c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4"
+              stroke="#e9f2f8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>Flood forecast<small>Model run, not an official warning</small></span>
+    </a>
+    <div class="place-pick"><h1 id="title">Flood forecasts</h1></div>
+    <div class="updated" id="updated" aria-live="polite">Loading the places…</div>
+    <span class="spacer"></span>
+    <span class="pill exp">Experimental</span>
+  </div>
+</header>
+
+<div class="alerts" id="alerts" aria-label="Warnings at every place"></div>
+
+<main class="front">
+  <section aria-labelledby="h-places" class="block">
+    <h2 id="h-places">Places</h2>
+    <div class="places" id="places"></div>
+  </section>
+  <section class="panel p-map" aria-labelledby="h-map">
+    <div class="map-tools">
+      <h2 id="h-map">Where</h2>
+      <label>Base map
+        <select id="base-pick">
+          <option value="streets">Streets</option>
+          <option value="terrain">Terrain</option>
+          <option value="satellite">Satellite</option>
+        </select>
+      </label>
+    </div>
+    <div id="map" role="region" aria-label="Map of the forecast places"></div>
+    <p class="readout">Each outline is the river basin of one forecast; its label shows the highest
+      level any forecast reaches there. Click a basin to open its forecast; where basins lie inside
+      each other, a click asks which one.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p id="notice"><strong>Experimental.</strong> These are computer models run automatically, not
+    official warnings. Follow the National Weather Service and your local emergency
+    management (in Nepal: the Department of Hydrology and Meteorology).</p>
+  <p>Model: <a href="https://pypi.org/project/MRRpy/">MRRpy</a>. Maps © OpenStreetMap contributors,
+    OpenTopoMap, Esri. Each place's page names its rain stations and forecasts.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="portal.js"></script>
+</body>
+</html>

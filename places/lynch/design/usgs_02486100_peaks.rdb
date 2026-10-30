@@ -1,0 +1,143 @@
+#
+# U.S. Geological Survey
+# National Water Information System
+# Retrieved: 2026-10-29 21:52:24 EDT
+#
+# ---------------------------------- WARNING ----------------------------------------
+# Some of the data that you have obtained from this U.S. Geological Survey database
+# may not have received Director's approval. Any such data values are qualified
+# as provisional and are subject to revision. Provisional data are released on the
+# condition that neither the USGS nor the United States Government may be held liable
+# for any damages resulting from its use.
+#
+# More data may be available offline.
+# For more information on these data,  contact  USGS Water Data Inquiries.
+# This file contains the annual peak streamflow data.
+#
+# This information includes the following fields:
+#
+#  agency_cd     Agency Code
+#  site_no       USGS station number
+#  peak_dt       Date of peak streamflow (format YYYY-MM-DD)
+#  peak_tm       Time of peak streamflow (24 hour format, 00:00 - 23:59)
+#  peak_va       Annual peak streamflow value in cfs
+#  peak_cd       Peak Discharge-Qualification codes (see explanation below)
+#  gage_ht       Gage height for the associated peak streamflow in feet
+#  gage_ht_cd    Gage height qualification codes
+#  year_last_pk  Peak streamflow reported is the highest since this year
+#  ag_dt         Date of maximum gage-height for water year (if not concurrent with peak)
+#  ag_tm         Time of maximum gage-height for water year (if not concurrent with peak
+#  ag_gage_ht    maximum Gage height for water year in feet (if not concurrent with peak
+#  ag_gage_ht_cd maximum Gage height code
+#
+# Sites in this file include:
+#  USGS 02486100 LYNCH CREEK AT JACKSON, MS
+#
+# Peak Streamflow-Qualification Codes(peak_cd):
+#   1 ... Discharge is a Maximum Daily Average
+#   2 ... Discharge is an Estimate
+#   3 ... Discharge affected by Dam Failure
+#   4 ... Discharge less than indicated value,
+#           which is Minimum Recordable Discharge at this site
+#   5 ... Discharge affected to unknown degree by
+#           Regulation or Diversion
+#   6 ... Discharge affected by Regulation or Diversion
+#   7 ... Discharge is an Historic Peak
+#   8 ... Discharge actually greater than indicated value
+#   9 ... Discharge due to Snowmelt, Hurricane,
+#           Ice-Jam or Debris Dam breakup
+#   A ... Year of occurrence is unknown or not exact
+#   Bd ... Day of occurrence is unknown or not exact
+#   Bm ... Month of occurrence is unknown or not exact
+#   C ... All or part of the record affected by Urbanization,
+#            Mining, Agricultural changes, Channelization, or other
+#   F ... Peak supplied by another agency
+#   O ... Opportunistic value not from systematic data collection
+#   R ... Revised
+#
+# Gage height qualification codes(gage_ht_cd,ag_gage_ht_cd):
+#   1 ... Gage height affected by backwater
+#   2 ... Gage height not the maximum for the year
+#   3 ... Gage height at different site and(or) datum
+#   4 ... Gage height below minimum recordable elevation
+#   5 ... Gage height is an estimate
+#   6 ... Gage datum changed during this year
+#   7 ... Debris, mud, or hyper-concentrated flow
+#   8 ... Gage height tidally affected
+#   Bd ... Day of occurrence is unknown or not exact
+#   Bm ... Month of occurrence is unknown or not exact
+#   F ... Peak supplied by another agency
+#   R ... Revised
+#
+#
+agency_cd	site_no	peak_dt	peak_tm	peak_va	peak_cd	gage_ht	gage_ht_cd	year_last_pk	ag_dt	ag_tm	ag_gage_ht	ag_gage_ht_cd
+5s	15s	10d	6s	8s	33s	8s	27s	4s	10d	6s	8s	27s
+USGS	02486100	1953-04-29		7500	C	18.90						
+USGS	02486100	1954-05-01		4700	C	15.50						
+USGS	02486100	1955-04-12		2700	C	13.08						
+USGS	02486100	1956-03-15		1640	C	9.26						
+USGS	02486100	1957-04-04		2940	C	13.56						
+USGS	02486100	1958-06-16		6600	C	13.80						
+USGS	02486100	1959-05-22		2480	C	11.84						
+USGS	02486100	1960-05-06		3270	C	13.66						
+USGS	02486100	1961-06-20		2190	C	11.10						
+USGS	02486100	1962-04-12		3510	C	14.61						
+USGS	02486100	1963-07-08		2450	C	11.80						
+USGS	02486100	1964-03-02		3200	C	13.21						
+USGS	02486100	1964-10-04		3300	C	13.57						
+USGS	02486100	1966-05-19		5400	C	16.70						
+USGS	02486100	1967-06-01		2950	C	12.93						
+USGS	02486100	1968-07-02		3750	C	14.21						
+USGS	02486100	1969-04-17		4100	C	14.61						
+USGS	02486100	1969-12-30		1450	C	8.92						
+USGS	02486100	1971-02-26		3500	C	13.80						
+USGS	02486100	1972-07-29		4200	C	14.70						
+USGS	02486100	1973-04-16		6000	C	17.32						
+USGS	02486100	1974-01-25		4300	C	14.95						
+USGS	02486100	1975-02-16		5000	C	16.65						
+USGS	02486100	1976-03-20		3800	C	15.25						
+USGS	02486100	1977-04-04		5400	C	17.65						
+USGS	02486100	1977-11-30		3300	C	14.22						
+USGS	02486100	1979-04-11		3800	C	15.28						
+USGS	02486100	1980-04-12		5200	C	17.69						
+USGS	02486100	1981-07-01		3450	C	14.90						
+USGS	02486100	1982-02-16		2460	C	12.30						
+USGS	02486100	1983-04-13		5390	C	17.86						
+USGS	02486100	1984-05-03		2960	C	13.64						
+USGS	02486100	1984-10-21		3800	C	15.46						
+USGS	02486100	1986-03-18		3600	C	15.09						
+USGS	02486100	1987-03-17		3240	C	14.31						
+USGS	02486100	1988-04-02		3040	C	13.85						
+USGS	02486100	1989-08-23		3060	C	13.91						
+USGS	02486100	1989-11-07		3110	C	14.02						
+USGS	02486100	1991-03-29		4300	C	16.31						
+USGS	02486100	1992-08-27		2120	C	11.33						
+USGS	02486100	1993-04-08		2530	C	12.49						
+USGS	02486100	1994-01-27		3060	C	13.91						
+USGS	02486100	1995-04-20		7180	C	16.30						
+USGS	02486100	1998-03-17		3370	C	13.94						
+USGS	02486100	1999-01-30		3980	C	14.77						
+USGS	02486100	2000-04-02		2830	C	12.98						
+USGS	02486100	2000-11-08		3240	C	13.66						
+USGS	02486100	2003-04-07		7470	C	18.85						
+USGS	02486100	2004-05-14		4450	C	15.41						
+USGS	02486100	2004-12-09		3820	C	14.54						
+USGS	02486100	2006-01-28		2690	C	12.73						
+USGS	02486100	2007-07-20		3310	C	13.76						
+USGS	02486100	2008-05-28		3900	C	14.66						
+USGS	02486100	2008-12-11		2230	C	11.87						
+USGS	02486100	2010-01-21		4020	C	14.82						
+USGS	02486100	2011-09-05		6830	C	18.20						
+USGS	02486100	2012-05-02	15:30	2720	C	12.79						
+USGS	02486100	2013-02-10	14:30	3680	C	14.33						
+USGS	02486100	2014-04-28	19:30	4120	C	14.96						
+USGS	02486100	2015-04-18	23:00	2420	C	12.24						
+USGS	02486100	2016-03-10	15:15	6010	C	17.31						
+USGS	02486100	2017-04-03	02:00	5130	C	17.76						
+USGS	02486100	2018-04-06	22:15	3110	C	14.05						
+USGS	02486100	2019-05-09	10:30	5130	C	17.76						
+USGS	02486100	2020-01-14	13:00	6010	C	19.16						
+USGS	02486100	2021-04-09	22:45	5620	C	18.56						
+USGS	02486100	2022-08-24	11:30	5830	C	18.88						
+USGS	02486100	2023-03-26	18:15	4820	C	17.24						
+USGS	02486100	2024-03-25	22:30	5000	2,C	17.55						

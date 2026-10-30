@@ -1,0 +1,56 @@
+# Lynch Creek (Jackson, Hinds County, Mississippi) to just above the Pearl River, 10 m.
+# Same physics as the Roshi Khola forecast (GA + impervious, implicit diffusive), on the
+# USGS 3DEP 1/3 arc-second (~10 m) DEM with the NHDPlus creeks burned in (embankments
+# over culverts otherwise turn Lynch Creek north below the gauge). Flood maps are drawn
+# on the 3DEP 1 m lidar as it is (forecast.yaml).
+# Rain comes from the forecast (forecast.yaml); OUTPUT_DIR is not used by it.
+# Explain any setting with:  MRRpy explain NAME
+
+# ── Where ─────────────────────────────────────────────────────────────────
+OUTPUT_POINT: [32.27541, -90.19032]   # on Lynch Creek, 300 m above the Pearl River (NHDPlus)
+DEM_BOUNDS_WGS84: [-90.31, 32.255, -90.165, 32.365]   # the DEM's box: setup checks the basin fits
+DEM_PATH: dem/lynch_3dep10m_burned.tif   # 3DEP 1/3 arc-second, creeks burned in: scripts/make_dem.py
+DEM_SCALE_M: 10              # the DEM's own cell size
+TARGET_CRS_EPSG: EPSG:32615   # UTM 15N
+MODEL_AREA: watershed
+DELINEATION_ENGINE: pyflwdir
+OUTPUT_DIR: static
+GEE_PROJECT: ee-074bce151saurav
+
+# ── Runoff: impervious ground + Green-Ampt infiltration with recovery ───────
+PRECIP_METHOD: idw
+RUNOFF_SOURCE: physical
+RUNOFF_MECHANISMS: [impervious, infiltration_excess]
+IMPERVIOUS_SOURCE: lcz
+GA_KSAT_SOURCE: gee           # HiHydroSoil v2.0
+GA_KSAT_DEPTH_CM: 60
+GA_SUCTION_SOURCE: texture
+GA_RECOVERY: true
+SOILGRIDS_DEPTH: b30
+VSA_SD_SOURCE: gee
+SERVES_SATELLITE: landsat
+SERVES_SEARCH_WINDOW: 30
+
+# ── Rivers ────────────────────────────────────────────────────────────────
+MANNINGS_N_SOURCE: lcz
+MANNINGS_N: 0.09
+MANNINGS_N_CHANNEL: 0.035
+# Bankfull flow: the median of the 69 yearly peaks at USGS 02486100 Lynch Creek at
+# Jackson (1953–2024: 3,680 cfs), at the gauge's 12.1 mi² (31.34 km²).
+CHANNEL_QBF_M3S: 104.2
+CHANNEL_QBF_AREA_KM2: 31.34
+CHANNEL_GEOMETRY: discharge
+CHANNEL_SUBGRID: true
+CHANNEL_MIN_AREA_KM2: 1.0     # NHDPlus has 37 km of creeks in the 38 km² basin
+ROUTING_SCHEME: diffusive_implicit
+ADAPTIVE_TIMESTEP: true
+IMPLICIT_CFL_TARGET: 2.0
+IMPLICIT_MAX_ITERS: 8
+IMPLICIT_TOL: 0.001            # 1 mm: half the Picard work of 0.1 mm, the same peak (12 h test storm)
+OUTPUT_INTERVAL_SECONDS: 600
+MASS_BALANCE_REPORT: true
+BACKEND: cpu
+
+# Added by 'lynch-forecast setup': the date of the soil-moisture layer
+# every forecast cycle uses (the run times come from the forecast).
+EVENT_START_UTC: '2026-10-30 00:00'

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Design storms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="leaflet.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .dz { max-width: 1400px; margin: 0 auto; padding: 14px; display: grid; gap: 14px;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .dz .wide { grid-column: 1 / -1; }
+  @media (max-width: 960px) { .dz { grid-template-columns: minmax(0, 1fr); } }
+  #dmap { height: 560px; border-radius: 10px; }
+  .dz table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+  .dz th, .dz td { padding: 5px 8px; border-bottom: 1px solid var(--line, #d8dee4); text-align: left; }
+  .dz td.num, .dz th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .dz .lead { font-size: 1rem; line-height: 1.5; margin: 0 0 6px; }
+  .dz .tools { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 8px; }
+  .dz .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin: 8px 0; }
+  .dz .fact { border: 1px solid var(--line, #d8dee4); border-radius: 8px; padding: 8px 10px; }
+  .dz .fact b { display: block; font-size: 1.25rem; }
+  .dz .fact span { color: var(--fg-2, #555); font-size: 0.82rem; }
+  #dchart svg { width: 100%; height: auto; display: block; }
+  .dz .legend span { margin-right: 10px; white-space: nowrap; }
+  .dz .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
+  .dz ul.notes li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="../">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect width="30" height="30" rx="7" fill="#1d6fb8"/>
+        <path d="M5 11c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 17c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 23c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4"
+              stroke="#e9f2f8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>Back to the live forecast<small>Model run, not an official warning</small></span>
+    </a>
+    <div class="place-pick"><h1 id="title">Design storms</h1></div>
+    <span class="spacer"></span>
+    <div class="seg" role="group" aria-label="Storm shown" id="storm-pick"></div>
+  </div>
+</header>
+
+<main class="dz">
+  <section class="panel wide" aria-labelledby="h-what">
+    <h2 id="h-what">What would a 10-year or 20-year storm do?</h2>
+    <p class="lead" id="lead">Loading…</p>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="h-map">
+    <div class="tools">
+      <h2 id="h-map" style="margin:0">Flood depth</h2>
+      <label>Map <select id="area-pick"></select></label>
+      <label>Base map
+        <select id="base-pick">
+          <option value="streets">Streets</option>
+          <option value="satellite">Satellite</option>
+          <option value="terrain">Terrain</option>
+        </select>
+      </label>
+      <label>See-through <input id="opacity" type="range" min="0.2" max="1" step="0.1" value="0.85"></label>
+    </div>
+    <div id="dmap" role="region" aria-label="Map of the deepest water in the selected design storm"></div>
+    <p class="readout" id="readout" aria-live="polite">Click on the map to read the depth.</p>
+    <p class="legend" id="legend"></p>
+    <p class="chart-note" id="map-note"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="h-peaks">
+    <h2 id="h-peaks">Highest flow at each point</h2>
+    <div class="tablewrap"><table id="peaks"></table></div>
+    <p class="chart-note" id="ffa-note"></p>
+    <h2 id="h-chart" style="margin-top:14px">Rain and flow at <span id="pt-name">–</span></h2>
+    <label>Point <select id="pt-pick"></select></label>
+    <div id="dchart" role="img" aria-labelledby="h-chart"></div>
+    <p class="chart-note">Hours from the start of the storm. Bars: rain in each hour (mm, same everywhere in the basin).
+      Lines: flow (m³/s). Dashed: the gauge's own flood of that return period, where there is one.</p>
+  </section>
+
+  <section class="panel wide" aria-labelledby="h-how">
+    <h2 id="h-how">How it was made</h2>
+    <ul class="notes" id="how"></ul>
+    <p id="downloads"></p>
+  </section>
+</main>
+
+<footer class="foot">
+  <p><strong>Experimental.</strong> A computer model run, not a flood study, a FEMA map or an official
+    forecast. Follow the National Weather Service and local emergency management.</p>
+  <p id="credits">Model: <a href="https://pypi.org/project/MRRpy/">MRRpy</a>. Rain: NOAA Atlas 14.
+    Terrain: USGS 3DEP. Maps © OpenStreetMap contributors, OpenTopoMap, Esri.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="design.js"></script>
+</body>
+</html>

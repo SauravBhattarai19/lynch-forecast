@@ -1,0 +1,28 @@
+# Design storms of Lynch Creek:  lynch-forecast design -f places/lynch/forecast.yaml
+# The 10- and 20-year 24-hour storms of NOAA Atlas 14 (Volume 9, version 2) at the middle
+# of the basin, nested: every duration from 10 minutes to 24 hours holds its Atlas 14
+# depth. The same model as the forecast, from its newest saved state; flood maps on the
+# USGS 3DEP 1 m lidar. See lynch_forecast/design.py.
+atlas14: design/atlas14.json        # fetched from NOAA HDSC when missing
+duration_hours: 24
+peak_at: 0.5                        # the most intense 10 minutes half-way through
+lead_hours: 1
+after_hours: 12                     # a 38 km² creek is back down within hours
+start_from: latest                  # the newest saved state: the soil as it is now
+pad_hours: 6                        # 2-D: hours run before the flood rises and after it falls
+storms:
+  - {name: 10-year storm, years: 10}
+  - {name: 20-year storm, years: 20}
+
+# The gauge's own floods, to check the storms' flows against (USGS peak-flow file).
+gauge_peaks: design/usgs_02486100_peaks.rdb
+gauge_point: Lynch Creek gauge at Valley Street (USGS 02486100)
+
+# 2-D flood simulations at 1 m (USGS 3DEP lidar) of the main reaches, each box under
+# 5 million cells. The forecast's own whole-basin map (1 m HAND) is drawn as well.
+flood_areas:
+  - {name: West branch at I-220 and Dixon Road, box: [-90.2600, 32.3030, -90.2420, 32.3180], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
+  - {name: Robinson Street to Ellis Avenue, box: [-90.2370, 32.2930, -90.2210, 32.3110], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
+  - {name: Valley Street gauge to University Boulevard, box: [-90.2240, 32.2795, -90.2050, 32.2925], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
+  - {name: State Street to the Pearl River, box: [-90.2070, 32.2720, -90.1880, 32.2855], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
+basin_map: true

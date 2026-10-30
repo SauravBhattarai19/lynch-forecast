@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flood forecast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" id="home" href="#">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <rect width="30" height="30" rx="7" fill="#1d6fb8"/>
+        <path d="M5 11c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 17c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4M5 23c3-2.5 5-2.5 8 0s5 2.5 8 0 3-2 4-1.4"
+              stroke="#e9f2f8" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>Flood forecast<small>Model run, not an official warning</small></span>
+    </a>
+    <div class="place-pick" id="place-pick-wrap">
+      <h1 id="title">Loading…</h1>
+    </div>
+    <div class="updated" id="updated" aria-live="polite"></div>
+    <span class="spacer"></span>
+    <div class="seg" role="group" aria-label="Times shown in">
+      <button type="button" id="tz-local" aria-pressed="true">Local time</button>
+      <button type="button" id="tz-utc" aria-pressed="false">UTC</button>
+    </div>
+  </div>
+</header>
+
+<div class="alerts" id="alerts" aria-label="Warnings in this forecast"></div>
+
+<main class="dash">
+  <section class="panel p-points" aria-label="Forecast points, flood maps and rain stations">
+    <div class="block">
+      <h2 id="h-points">Forecast points</h2>
+      <ol class="plist" id="point-list" aria-labelledby="h-points"></ol>
+    </div>
+    <div class="block">
+      <h2 id="h-maps">Flood maps</h2>
+      <div class="mlist" id="map-list" role="group" aria-labelledby="h-maps"></div>
+      <p class="chart-note">Deepest water over the run (main forecast). Show a map, then click
+        on it to read the depth.</p>
+    </div>
+    <div class="block">
+      <h2 id="h-stations">Stations and gauges</h2>
+      <ul class="slist" id="station-list" aria-labelledby="h-stations"></ul>
+    </div>
+  </section>
+
+  <section class="panel p-map" aria-labelledby="h-map">
+    <div class="map-tools">
+      <h2 id="h-map">Map</h2>
+      <label>Base map
+        <select id="base-pick">
+          <option value="streets">Streets</option>
+          <option value="terrain">Terrain</option>
+          <option value="satellite">Satellite</option>
+        </select>
+      </label>
+      <label>Flood map <select id="flood-pick"><option value="">None</option></select></label>
+      <label>See-through <input id="opacity" type="range" min="0.2" max="1" step="0.1" value="0.85"></label>
+      <label class="check"><input type="checkbox" id="show-rivers" autocomplete="off"> Rivers by flow</label>
+    </div>
+    <div id="map" role="region" aria-label="Map of the basin: points, rivers, stations, gauges and flood maps"></div>
+    <p class="readout" id="readout" aria-live="polite"></p>
+    <div class="map-foot" id="map-foot"></div>
+  </section>
+
+  <section class="panel p-focus" aria-labelledby="focus-name">
+    <div class="focus-head">
+      <h3 id="focus-name">–</h3>
+      <p id="focus-sub"></p>
+    </div>
+    <div class="hero">
+      <div class="tile"><div class="lbl" id="now-lbl">Flow now</div>
+        <div class="big" id="now-q">–</div><div class="sub" id="now-sub"></div></div>
+      <div class="tile"><div class="lbl" id="peak-lbl">Highest expected</div>
+        <div class="big" id="peak-q">–</div><div class="sub" id="peak-sub"></div></div>
+      <div class="tile gauge" id="gauge-tile" hidden><div class="lbl" id="gauge-lbl">Measured at the gauge</div>
+        <div class="big" id="gauge-m">–</div><div class="sub" id="gauge-sub"></div></div>
+    </div>
+    <div class="block spread">
+      <h2 id="h-spread">Highest flow in each forecast</h2>
+      <div id="spread" role="img" aria-labelledby="h-spread"></div>
+    </div>
+    <div class="block">
+      <h2 id="h-days">Day by day</h2>
+      <div class="days" id="days" role="group" aria-labelledby="h-days"></div>
+    </div>
+    <div class="block">
+      <h2 id="h-sources">Forecasts used</h2>
+      <div class="tablewrap"><table class="srcs" id="sources"></table></div>
+    </div>
+  </section>
+
+  <section class="panel p-chart" aria-labelledby="h-chart">
+    <div class="panel-head">
+      <h2 id="h-chart">Rain and river flow</h2>
+      <div class="seg" role="group" aria-label="Time shown">
+        <button type="button" data-range="all" aria-pressed="true">Whole run</button>
+        <button type="button" data-range="24" aria-pressed="false">Next 24 h</button>
+        <button type="button" data-range="72" aria-pressed="false">Next 72 h</button>
+      </div>
+      <button type="button" class="linkbtn" id="table-toggle" aria-expanded="false">Show as a table</button>
+    </div>
+    <div class="keys" id="keys" role="group" aria-label="Forecasts shown (click to hide or show)"></div>
+    <div class="chart" id="chart" tabindex="0"
+         aria-label="Chart of rain and river flow. Use the left and right arrow keys to read values."></div>
+    <p class="chart-note" id="chart-note"></p>
+    <div class="tablewrap" id="chart-table" hidden></div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <p id="notice"><strong>Experimental.</strong> These are computer models run automatically, not
+    official warnings. Follow the National Weather Service and your local emergency
+    management (in Nepal: the Department of Hydrology and Meteorology).</p>
+  <p id="credits">Model: <a href="https://pypi.org/project/MRRpy/">MRRpy</a>. Maps ©
+    OpenStreetMap contributors, OpenTopoMap, Esri.</p>
+  <p id="downloads"></p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

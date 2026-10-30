@@ -1,0 +1,10 @@
+# The places forecast here, and the one web site that shows them all.
+# Add a place: make its folder with  lynch-forecast new places/<name>,
+# set it up, then list its forecast.yaml below.
+title: Flood forecasts, Jackson MS (experimental)
+notice: Run as a research test of MRRpy. Not an official forecast; follow the National Weather Service.
+every_minutes: 60
+places:
+  - places/lynch/forecast.yaml
+# The web pages go to gh-pages (fill in the repository, then uncomment):
+publish: {git: {remote: https://github.com/SauravBhattarai19/lynch-forecast.git, state: false}}   # the site → gh-pages

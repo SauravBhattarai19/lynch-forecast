@@ -1,0 +1,36 @@
+# Written by the forecast while it runs: kept on the server, not in git
+archive/
+cycles/
+forecasts_cache/
+replay/
+site/
+states/
+static/
+setup_check/
+status.json
+check_map.html
+.cycle.lock
+.serve.lock
+old/
+*.log
+**/rehearsal/imerg_2024/
+public/
+.publish/
+
+# Secrets: never commit them (see docs/operator-guide.md)
+credentials*.env
+*.env
+.env
+key.json
+
+# Python
+__pycache__/
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+
+# Design storms: the runs and logs are made on the server (design.yaml, atlas14.json
+# and the USGS peak file are kept)
+places/*/design/runs/
+places/*/design/logs/

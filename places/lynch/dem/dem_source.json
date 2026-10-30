@@ -1,0 +1,20 @@
+{
+ "dem": "lynch_3dep10m_burned.tif",
+ "made_utc": "2026-10-30 01:28",
+ "source": [
+  "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n33w091/USGS_13_n33w091.tif"
+ ],
+ "box_wgs84": [
+  -90.31,
+  32.255,
+  -90.165,
+  32.365
+ ],
+ "crs": "EPSG:32615",
+ "cell_m": 10.0,
+ "creeks": "https://api.water.usgs.gov/nldi/linked-data/comid/15756806/navigation/UT/flowlines?distance=200",
+ "lines": 20,
+ "snap_cells": 2,
+ "burn_m": 3.0,
+ "cells_burned": 4059
+}

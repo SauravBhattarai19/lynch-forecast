@@ -1,0 +1,59 @@
+# Live flood forecast for Lynch Creek, Jackson (Hinds County), Mississippi: the 38 km²
+# above the Pearl River. Forecast only: the rain before now is the main forecast
+# model's own (no rain gauges are read). Check it with:
+#   lynch-forecast check -f places/lynch/forecast.yaml
+# Times are UTC unless a setting says otherwise.
+
+name: Lynch Creek flood forecast
+model: model.yaml
+folder: .
+display_timezone: America/Chicago
+every_minutes: 60
+forecast_hours: 72
+look_back_hours: 24           # a whole day of measured level next to the model on the chart
+warm_up_days: 30
+missing_rain: forecast_model  # no rain gauges: the main forecast model's rain
+threads_per_run: 16
+
+rain_stations: []
+
+rain_forecasts:               # each one is a version of the forecast (Open-Meteo)
+  - {name: NBM,   source: open_meteo, model: ncep_nbm_conus, spacing_m: 3000, buffer_m: 3000}  # NWS National Blend of Models, 2.5 km
+  - {name: HRRR,  source: open_meteo, model: ncep_hrrr_conus, spacing_m: 3000, buffer_m: 3000}  # NOAA HRRR, 3 km, 48 h ahead
+  - {name: GFS,   source: open_meteo, model: gfs_global, buffer_m: 3000}       # NOAA GFS (gfs_seamless is HRRR here)
+  - {name: ECMWF, source: open_meteo, model: ecmwf_ifs, spacing_m: 9000, buffer_m: 3000} # ECMWF IFS, 9 km
+  - {name: ICON,  source: open_meteo, model: icon_seamless, buffer_m: 3000}   # DWD ICON
+main_forecast: NBM            # this one draws the flood maps
+past_rain_forecast: HRRR      # the rain before now: HRRR's own hourly short-range runs
+no_rain_version: true         # also: what if no more rain falls?
+
+inflows: []                   # a headwater basin
+
+# Levels at the gauge: warning = NWS action stage 12 ft at LYNM6 (2,210 cfs on USGS rating
+# 5.0); danger = the 10-year flood (5,845 cfs; log-Pearson III of the 69 yearly peaks,
+# 1953–2024). Elsewhere on Lynch Creek they are the gauge's, scaled by drainage area^0.75:
+# placeholders, not real levels. Drainage areas are the model's (10 m).
+hydrograph_points:
+  - {name: West branch at I-220, lat: 32.31421, lon: -90.24671}                                                    # 7.5 km²
+  - {name: Lynch Creek at Officer Catchings Drive, lat: 32.31951, lon: -90.23370}                                  # 11.2 km²
+  - {name: Lynch Creek at Robinson Street, lat: 32.30529, lon: -90.23074, warning_m3s: 49.6, danger_m3s: 131.2}    # 22.7 km²
+  - {name: Lynch Creek at Ellis Avenue, lat: 32.29801, lon: -90.22756, warning_m3s: 51.4, danger_m3s: 136.1}       # 23.9 km²
+  - {name: Lynch Creek gauge at Valley Street (USGS 02486100), lat: 32.28448, lon: -90.21492, warning_m3s: 62.5, danger_m3s: 165.5}   # 31.0 km²
+  - {name: Lynch Creek at University Boulevard, lat: 32.28326, lon: -90.20869, warning_m3s: 69.4, danger_m3s: 183.7}   # 35.6 km²
+  - {name: Lynch Creek at South Gallatin Street, lat: 32.27641, lon: -90.19288, warning_m3s: 72.2, danger_m3s: 191.3}  # 37.6 km², 0.3 km above the Pearl
+
+river_gauges:                 # measured water level, drawn under the point's hydrograph
+  - {name: Lynch Creek at Jackson (USGS 02486100), source: usgs, site: "02486100", point: Lynch Creek gauge at Valley Street (USGS 02486100)}
+
+flood_areas: []               # close-ups: see design.yaml for the 2-D maps at 1 m
+
+# Every creek of the basin at 1 m (USGS 3DEP lidar) by HAND, in 4 × 4 overlapping boxes
+# side by side: quick enough for every cycle. (2-D at 1 m takes 10–60 min a box: the
+# design storms have it, design.yaml.)
+basin_map: {name: Every creek (1 m), method: hand, boxes: [4, 4], overlap_km: 0.5, dem: usgs_3dep_1m, dem_scale_m: 1}
+
+website:
+  title: Lynch Creek flood forecast, Jackson MS (experimental)
+  notice: Run as a research test of MRRpy. Not an official forecast; follow the National Weather Service (Jackson, MS). Warning = NWS action stage, danger = 10-year flood at the USGS gauge, scaled by drainage area elsewhere.
+  links:
+    - {name: "Design storms: the 10- and 20-year storms (NOAA Atlas 14), 1 m flood maps", url: design/}
