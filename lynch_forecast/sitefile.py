@@ -81,6 +81,7 @@ class BasinMap:
     overlap_km: float = 1.5
     dem: str = "auto"
     dem_scale_m: Optional[float] = None
+    margin_km: Optional[float] = None   # fine DEM fetched this far around a box (MRRpy: 3 km)
     box_cells: int = 250_000       # boxes: auto aims at about this many cells a box
     workers: int = 0               # boxes at the same time (0 = all)
     threads: int = 0               # CPU threads a box (0 = the cores shared out)
@@ -172,8 +173,8 @@ _TOP = {
 }
 _POINT = {"name", "lat", "lon", "warning_m3s", "danger_m3s", "snap_radius_cells"}
 _AREA = {"name", "box", "method", "dem", "dem_scale_m"}
-_BASIN_MAP = {"name", "method", "boxes", "overlap_km", "dem", "dem_scale_m", "box_cells",
-              "workers", "threads"}
+_BASIN_MAP = {"name", "method", "boxes", "overlap_km", "dem", "dem_scale_m", "margin_km",
+              "box_cells", "workers", "threads"}
 _INFLOW = {"name", "lat", "lon", "source", "ahead", "recede_hours"}
 _WEBSITE = {"title", "publish", "notice", "links"}
 _PATH_KEYS = ("path", "gauges", "timeseries")
@@ -447,6 +448,8 @@ def parse_site(data, path="forecast.yaml"):
             b.dem = _resolve(base, b.dem)
         if bm.get("dem_scale_m") is not None:
             b.dem_scale_m = _num(bm["dem_scale_m"], "basin_map: dem_scale_m", errors, lo=1)
+        if bm.get("margin_km") is not None:
+            b.margin_km = _num(bm["margin_km"], "basin_map: margin_km", errors, lo=0)
         for key in ("box_cells", "workers", "threads"):
             if key in bm:
                 v = bm[key]

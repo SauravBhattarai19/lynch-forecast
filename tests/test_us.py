@@ -126,3 +126,11 @@ def test_solver_settings_need_no_new_setup(tmp_path):
     assert model_fingerprint(site) == before
     (tmp_path / "model.yaml").write_text("DEM_SCALE_M: 30\nIMPLICIT_TOL: 0.001\n")
     assert model_fingerprint(site) != before
+
+
+def test_basin_map_margin(tmp_path):
+    (tmp_path / "model.yaml").write_text("{}\n")
+    site = parse_site(_forecast(basin_map={"method": "hand", "boxes": [4, 4], "margin_km": 0.5}),
+                      str(tmp_path / "f.yaml"))
+    assert site.basin_map.margin_km == 0.5
+    assert parse_site(_forecast(basin_map="hand"), str(tmp_path / "f.yaml")).basin_map.margin_km is None

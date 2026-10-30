@@ -145,6 +145,7 @@ and joined. `basin_map: 2d` (or `hand`) uses the defaults.
 | `boxes` | `auto` for 2-D, `[1, 1]` for HAND | `[columns, rows]`; give it for HAND on a 1 m DEM, so each box stays under MRRpy's 30 million cells |
 | `overlap_km` | 0.5 | how far the boxes overlap; the deeper water is kept where they do |
 | `dem`, `dem_scale_m` | as for flood areas | Lynch Creek: `usgs_3dep_1m`, 1 |
+| `margin_km` | 3 (MRRpy's) | how far around each box the fine DEM is fetched; at 1 m, 3 km makes any box more than MRRpy's 30 million cells, so Lynch Creek uses 0.5 |
 
 ## The web page: `website`
 
@@ -168,6 +169,7 @@ reads `design.yaml` beside the forecast file:
 | `duration_hours` | 24 | the storm's length |
 | `peak_at` | 0.5 | where the most intense 10 minutes fall (0.5 = half-way) |
 | `lead_hours`, `after_hours` | 1, 24 | dry hours before the storm; hours run after it |
+| `margin_km` | 3 (MRRpy's) | as in `basin_map`: 0.5 for the 1 m boxes |
 | `pad_hours` | 6 | 2-D maps: hours simulated before the flood rises and after it falls (MRRpy's own is 24; at 1 m a simulated hour takes about 2 minutes on 32 cores) |
 | `start_from` | `latest` | the saved state to start from: `latest`, or a state file, e.g. `states/state_20261030T0000Z.npz` |
 | `storms` | (needed) | `{name, years}` each; years between Atlas 14's are read on the Gumbel scale |

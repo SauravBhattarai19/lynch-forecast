@@ -137,7 +137,8 @@ def nested_storm(depths, hours=24.0, peak_at=0.5, step_min=STEP_MIN):
 # ── Settings ─────────────────────────────────────────────────────────────────
 
 DEFAULTS = {"duration_hours": 24.0, "peak_at": 0.5, "lead_hours": 1.0, "after_hours": 24.0,
-            "start_from": "latest", "storms": [], "pad_hours": 6.0}
+            "start_from": "latest", "storms": [], "pad_hours": 6.0,
+            "margin_km": None}
 
 
 def load_design(site):
@@ -202,7 +203,7 @@ def design_areas(d):
     return out
 
 
-def _area_job(cfgs, dirs, area, cache_dir, log_path, pad_hours=None):
+def _area_job(cfgs, dirs, area, cache_dir, log_path, pad_hours=None, margin_km=None):
     """One flood area for every storm, in its own process (its DEM is fetched once,
     with Earth Engine, then kept in *cache_dir*) → [(storm, area name, result)].
     *pad_hours*: 2-D hours simulated before the flood's rise and after its fall
@@ -211,8 +212,10 @@ def _area_job(cfgs, dirs, area, cache_dir, log_path, pad_hours=None):
     import traceback
     from MRRpy.config import Config
     from MRRpy.core.inundation import make_flood_maps, model2d
+    from .basinmap import set_margin
     if pad_hours is not None:
         model2d.PAD_S = float(pad_hours) * 3600.0             # this process only
+    set_margin(margin_km)
     out = []
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
     with open(log_path, "w") as logf, contextlib.redirect_stdout(logf), \
@@ -245,7 +248,7 @@ def _area_job(cfgs, dirs, area, cache_dir, log_path, pad_hours=None):
     return out
 
 
-def draw_areas(site, areas, cfgs, dirs, log=print, pad_hours=None):
+def draw_areas(site, areas, cfgs, dirs, log=print, pad_hours=None, margin_km=None):
     """Every design flood area for every storm, the areas side by side."""
     from concurrent.futures import ProcessPoolExecutor
     from multiprocessing import get_context
@@ -260,7 +263,8 @@ def draw_areas(site, areas, cfgs, dirs, log=print, pad_hours=None):
                                                     mp_context=get_context("spawn")) as ex:
         futs = {a.name: ex.submit(_area_job, cfgs, dirs, a,
                                   site.dir("static", "areas", slug(a.name)),
-                                  site.dir("design", "logs", slug(a.name) + ".log"), pad_hours)
+                                  site.dir("design", "logs", slug(a.name) + ".log"), pad_hours,
+                                  margin_km)
                 for a in areas}
         for name, fut in futs.items():
             try:
@@ -344,7 +348,7 @@ def run_design(site, log=print, parallel=True, maps=True):
     if maps:
         cfgs = {s["id"]: jobs[s["name"]][0] for s in storms}
         dirs = {s["id"]: s["dir"] for s in storms}
-        done = draw_areas(site, design_areas(d), cfgs, dirs, log, d["pad_hours"])
+        done = draw_areas(site, design_areas(d), cfgs, dirs, log, d["pad_hours"], d["margin_km"])
         if d.get("basin_map", True) and site.basin_map:
             for s in storms:
                 st = cycle.Status(datetime.utcnow())

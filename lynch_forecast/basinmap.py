@@ -72,11 +72,20 @@ def plan_boxes(watershed_geojson, boxes="auto", overlap_km=1.5, cell_m=30.0,
     return out, (nx, ny)
 
 
-def _box_job(cfg_dict, box, out_dir, cache_dir, log_path, allow_ee):
+def set_margin(margin_km):
+    """The fine DEM is fetched *margin_km* around a map area (MRRpy's 3 km makes any
+    box at 1 m over its 30 million cells).  For this process only."""
+    if margin_km is not None:
+        from MRRpy.core.inundation import finegrid
+        finegrid.BUFFER_M = float(margin_km) * 1000.0
+
+
+def _box_job(cfg_dict, box, out_dir, cache_dir, log_path, allow_ee, margin_km=None):
     """One box's 2D map, in its own process → small dict (dry: no river in it)."""
     import contextlib
     from MRRpy.config import Config
     from MRRpy.core.inundation import make_flood_maps
+    set_margin(margin_km)
     t0 = time.time()
     res = {"ok": False, "dry": False, "seconds": 0.0, "error": None}
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
@@ -95,6 +104,15 @@ def _box_job(cfg_dict, box, out_dir, cache_dir, log_path, allow_ee):
             else:
                 traceback.print_exc()
                 res["error"] = f"ValueError: {exc}"
+        except IndexError as exc:
+            # A box whose creeks all lack routed flow (a headwater edge): MRRpy has no
+            # river level to map and fails writing the empty map.  Nothing floods there.
+            if "write_outputs" in traceback.format_exc():
+                print(f"  Basin map: no creek with routed flow in this box ({exc}); dry.")
+                res.update(ok=True, dry=True)
+            else:
+                traceback.print_exc()
+                res["error"] = f"IndexError: {exc}"
         except Exception as exc:                          # noqa: BLE001 — reported
             traceback.print_exc()
             res["error"] = f"{type(exc).__name__}: {exc}"
@@ -124,7 +142,8 @@ def _run_boxes(site, cfg_dict, boxes, run_dir, allow_ee, log):
     threads = bm.threads or max(1, (os.cpu_count() or 2) // min(n, workers))
     jobs = {b["name"]: (cfg_dict, b["box"], os.path.join(run_dir, b["name"]),
                         site.dir("static", "basin_map", b["name"]),
-                        os.path.join(run_dir, b["name"] + ".log"), allow_ee) for b in boxes}
+                        os.path.join(run_dir, b["name"] + ".log"), allow_ee, bm.margin_km)
+            for b in boxes}
     results = {}
     with thread_limit(threads), ProcessPoolExecutor(min(n, workers),
                                                     mp_context=get_context("spawn")) as ex:

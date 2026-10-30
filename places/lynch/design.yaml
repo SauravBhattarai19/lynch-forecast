@@ -10,6 +10,8 @@ lead_hours: 1
 after_hours: 12                     # a 38 km² creek is back down within hours
 start_from: latest                  # the newest saved state: the soil as it is now
 pad_hours: 6                        # 2-D: hours run before the flood rises and after it falls
+margin_km: 0.5                      # 1 m DEM fetched 0.5 km around each box (MRRpy's 3 km is
+                                    # over its 30 million cells at 1 m)
 storms:
   - {name: 10-year storm, years: 10}
   - {name: 20-year storm, years: 20}
