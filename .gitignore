@@ -34,3 +34,6 @@ dist/
 # and the USGS peak file are kept)
 places/*/design/runs/
 places/*/design/logs/
+
+# The 1 m lidar DEM is large: rebuild it with scripts/make_lidar.py (see docs/lynch.md)
+places/*/dem/*_3dep1m.tif

@@ -15,7 +15,7 @@ change:
 | | Roshi Khola | Lynch Creek |
 |---|---|---|
 | Routing terrain | FABDEM 90 m | USGS 3DEP 1/3 arc-second, 10 m, NHDPlus creeks burned in |
-| Flood-map terrain | the model grid, 30 m | USGS 3DEP 1 m lidar (MS_NRCS_East_2018) |
+| Flood-map terrain | the model grid, 30 m | USGS 3DEP 1 m lidar (MS_NatchezTrace_2016) |
 | Past rain | two rain stations (RTS) | no station: HRRR's own hourly runs |
 | Rain forecasts | ECMWF, GFS, ICON, alertnepal | NBM (main), HRRR, GFS, ECMWF, ICON, no more rain |
 | River gauge on the page | RTS 471 at Panauti | USGS 02486100 at Valley Street |
@@ -49,6 +49,30 @@ rising downstream. That is 4,059 cells on 20 lines, written beside the DEM in
 
 The flood maps use the 1 m lidar as it is, with nothing burned in, so the
 culverts under roads are not in them either.
+
+### The 1 m lidar: `dem/lynch_3dep1m.tif`
+
+Earth Engine's `USGS/3DEP/1m` keeps only the newest survey of each place. Here
+that is MS_NRCS_East_2018, which covers 0.1 % of the basin, and its downloads
+give 0 m where it has nothing: 70–87 % of each 1 m download was a 90 m pit,
+and the 2-D maps on it had 27 m of water moving at 400 m/s. So the 1 m DEM is
+built from the USGS's own tiles of the MS_NatchezTrace_2016 survey, which covers
+the whole basin:
+
+```bash
+# the four tiles, 1.7 GB (windowed reads over the web are slow for these files)
+for t in x75y358 x75y359 x76y358 x76y359; do
+  curl -sO https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_${t}_MS_NatchezTrace_2016.tif &
+done; wait
+python scripts/make_lidar.py --box -90.303 32.258 -90.174 32.362 --crs EPSG:32615 \
+    --project MS_NatchezTrace_2016 --only-project --tiles-dir . \
+    --out places/lynch/dem/lynch_3dep1m.tif --also 4
+```
+
+It is 147 million cells: 97.8 % from the survey, and the rest of the box (its
+edges, outside the basin) filled from the 10 m DEM. At 300 MB it is not in git;
+`lynch_3dep1m.json` says how it was made, and the 4 m copy
+(`lynch_3dep4m.tif`, the mean of the 1 m cells) is kept.
 
 The rest of `model.yaml` is the Roshi physics: Green-Ampt infiltration
 (HiHydroSoil) with impervious land (local climate zones), and implicit

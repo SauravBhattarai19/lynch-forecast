@@ -20,11 +20,11 @@ storms:
 gauge_peaks: design/usgs_02486100_peaks.rdb
 gauge_point: Lynch Creek gauge at Valley Street (USGS 02486100)
 
-# 2-D flood simulations at 1 m (USGS 3DEP lidar) of the main reaches, each box under
-# 5 million cells. The forecast's own whole-basin map (1 m HAND) is drawn as well.
+# 2-D flood simulations at 1 m (USGS 3DEP lidar, NatchezTrace 2016: scripts/make_lidar.py)
+# of the main reaches, each box under 5 million cells. The forecast's own whole-basin map (1 m HAND) is drawn as well.
 flood_areas:
-  - {name: West branch at I-220 and Dixon Road, box: [-90.2600, 32.3030, -90.2420, 32.3180], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
-  - {name: Robinson Street to Ellis Avenue, box: [-90.2370, 32.2930, -90.2210, 32.3110], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
-  - {name: Valley Street gauge to University Boulevard, box: [-90.2240, 32.2795, -90.2050, 32.2925], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
-  - {name: State Street to the Pearl River, box: [-90.2070, 32.2720, -90.1880, 32.2855], method: 2d, dem: usgs_3dep_1m, dem_scale_m: 1}
+  - {name: West branch at I-220 and Dixon Road, box: [-90.2600, 32.3030, -90.2420, 32.3180], method: 2d, dem: dem/lynch_3dep1m.tif}
+  - {name: Robinson Street to Ellis Avenue, box: [-90.2370, 32.2930, -90.2210, 32.3110], method: 2d, dem: dem/lynch_3dep1m.tif}
+  - {name: Valley Street gauge to University Boulevard, box: [-90.2240, 32.2795, -90.2050, 32.2925], method: 2d, dem: dem/lynch_3dep1m.tif}
+  - {name: State Street to the Pearl River, box: [-90.2070, 32.2720, -90.1880, 32.2855], method: 2d, dem: dem/lynch_3dep1m.tif}
 basin_map: true

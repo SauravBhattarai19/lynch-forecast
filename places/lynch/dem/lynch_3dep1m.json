@@ -1,0 +1,31 @@
+{
+ "dem": "lynch_3dep1m.tif",
+ "copies": [
+  "lynch_3dep4m.tif"
+ ],
+ "made_utc": "2026-10-30 05:13",
+ "box_wgs84": [
+  -90.303,
+  32.258,
+  -90.174,
+  32.362
+ ],
+ "crs": "EPSG:32615",
+ "cell_m": 1.0,
+ "surveys": [
+  {
+   "project": "MS_NatchezTrace_2016",
+   "percent": 97.828,
+   "tiles": [
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x20y358_MS_NatchezTrace_2016.tif",
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x20y359_MS_NatchezTrace_2016.tif",
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x75y358_MS_NatchezTrace_2016.tif",
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x75y359_MS_NatchezTrace_2016.tif",
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x76y358_MS_NatchezTrace_2016.tif",
+    "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/Projects/MS_NatchezTrace_2016/TIFF/USGS_one_meter_x76y359_MS_NatchezTrace_2016.tif"
+   ]
+  }
+ ],
+ "filled_from_10m_percent": 2.17,
+ "source": "USGS 3DEP 1 m DEM tiles, The National Map (prd-tnm)"
+}

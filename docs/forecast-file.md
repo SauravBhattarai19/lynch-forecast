@@ -20,7 +20,7 @@ hydrograph_points:
   - {name: Lynch Creek gauge at Valley Street (USGS 02486100), lat: 32.28448, lon: -90.21492, warning_m3s: 62.5, danger_m3s: 165.5}
 river_gauges:
   - {name: Lynch Creek at Jackson (USGS 02486100), source: usgs, site: "02486100", point: Lynch Creek gauge at Valley Street (USGS 02486100)}
-basin_map: {method: hand, boxes: [4, 4], overlap_km: 0.5, dem: usgs_3dep_1m, dem_scale_m: 1}
+basin_map: {method: hand, boxes: [4, 4], overlap_km: 0.5, dem: dem/lynch_3dep1m.tif, margin_km: 0.5}
 website:
   title: Lynch Creek flood forecast, Jackson MS (experimental)
 ```
@@ -144,7 +144,7 @@ and joined. `basin_map: 2d` (or `hand`) uses the defaults.
 | `method` | `2d` | `2d` or `hand` |
 | `boxes` | `auto` for 2-D, `[1, 1]` for HAND | `[columns, rows]`; give it for HAND on a 1 m DEM, so each box stays under MRRpy's 30 million cells |
 | `overlap_km` | 0.5 | how far the boxes overlap; the deeper water is kept where they do |
-| `dem`, `dem_scale_m` | as for flood areas | Lynch Creek: `usgs_3dep_1m`, 1 |
+| `dem`, `dem_scale_m` | as for flood areas | Lynch Creek: `dem/lynch_3dep1m.tif` (`scripts/make_lidar.py`) |
 | `margin_km` | 3 (MRRpy's) | how far around each box the fine DEM is fetched; at 1 m, 3 km makes any box more than MRRpy's 30 million cells, so Lynch Creek uses 0.5 |
 
 ## The web page: `website`

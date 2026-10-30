@@ -47,10 +47,11 @@ river_gauges:                 # measured water level, drawn under the point's hy
 
 flood_areas: []               # close-ups: see design.yaml for the 2-D maps at 1 m
 
-# Every creek of the basin at 1 m (USGS 3DEP lidar) by HAND, in 4 × 4 overlapping boxes
+# Every creek of the basin at 1 m (USGS 3DEP lidar, NatchezTrace 2016, scripts/make_lidar.py;
+# Earth Engine's 3DEP 1 m holds only the 2018 survey, 0.1 % of the basin) by HAND, in 4 × 4 overlapping boxes
 # side by side: quick enough for every cycle. (2-D at 1 m takes 10–60 min a box: the
 # design storms have it, design.yaml.)
-basin_map: {name: Every creek (1 m), method: hand, boxes: [4, 4], overlap_km: 0.5, dem: usgs_3dep_1m, dem_scale_m: 1, margin_km: 0.5}
+basin_map: {name: Every creek (1 m), method: hand, boxes: [4, 4], overlap_km: 0.5, dem: dem/lynch_3dep1m.tif, margin_km: 0.5}
 
 website:
   title: Lynch Creek flood forecast, Jackson MS (experimental)

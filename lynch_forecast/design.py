@@ -194,11 +194,15 @@ def gauge_frequency(path):
 
 def design_areas(d):
     """The design's own flood areas (design.yaml 'flood_areas') → [Area]."""
-    from .sitefile import Area
+    from .sitefile import Area, _resolve
     out = []
+    here = os.path.dirname(d.get("path") or ".")
     for a in d.get("flood_areas") or []:
+        dem = str(a.get("dem", "auto"))
+        if dem.lower().endswith((".tif", ".tiff")):
+            dem = _resolve(here, dem)                         # beside design.yaml
         out.append(Area(str(a["name"]), tuple(float(v) for v in a["box"]),
-                        str(a.get("method", "2d")), str(a.get("dem", "auto")),
+                        str(a.get("method", "2d")), dem,
                         float(a["dem_scale_m"]) if a.get("dem_scale_m") is not None else None))
     return out
 
