@@ -1,11 +1,12 @@
 # Lynch Creek flood forecast, Jackson MS (experimental)
 
 A live flood forecast for Lynch Creek in Jackson, Hinds County, Mississippi.
-Every hour it fetches the latest weather-model rain (NBM, HRRR, GFS, ECMWF and
+Every 6 hours it fetches the latest weather-model rain (NBM, HRRR, GFS, ECMWF and
 ICON), runs the [MRRpy](https://github.com/SauravBhattarai19/MRRpy) model 72
 hours ahead on the USGS 3DEP 10 m terrain, and maps the flood depth on the USGS
 3DEP 1 m lidar. A second page runs the 10-year and 20-year design storms of NOAA
-Atlas 14 through the same model, with 2-D flood maps at 1 m.
+Atlas 14 through the same model, with 2-D flood maps at 4 m (the 1 m lidar averaged)
+and the 1 m HAND map of the whole basin.
 
 It is the [Roshi Khola forecast](https://github.com/SauravBhattarai19/Roshi-Forecast)
 (Nepal) moved to a US county creek, to show the same system working on county
@@ -23,7 +24,7 @@ data.
 |---|---|
 | Basin | Lynch Creek to just above the Pearl River, 37.9 km² (14.6 mi²); the USGS gauge 02486100 at Valley Street drains 31.3 km² |
 | Routing terrain | USGS 3DEP 1/3 arc-second DEM at 10 m (379,000 cells), the NHDPlus creeks burned in ([why](docs/lynch.md#the-terrain-dem-and-modelyaml)) |
-| Flood maps | USGS 3DEP 1 m lidar (NatchezTrace 2016, [`scripts/make_lidar.py`](docs/lynch.md#the-1-m-lidar-demlynch_3dep1mtif)): every creek of the basin by HAND each update; 2-D at 1 m for the design storms |
+| Flood maps | USGS 3DEP 1 m lidar (NatchezTrace 2016, [`scripts/make_lidar.py`](docs/lynch.md#the-1-m-lidar-demlynch_3dep1mtif)): every creek of the basin by HAND each update; 2-D at 4 m for the design storms |
 | Rain | no station: HRRR's hourly runs before now; after now NBM (the main forecast), HRRR, GFS, ECMWF, ICON and "no more rain", each its own version, through [Open-Meteo](https://open-meteo.com) |
 | River flow | seven points from the West branch at I-220 to South Gallatin Street, in m³/s, with the gauge's measured level from USGS |
 | Warning levels | warning: the NWS action stage at the gauge (LYNM6, 12 ft = 2,210 cfs); danger: the gauge's 10-year flood (5,845 cfs) |
@@ -81,7 +82,7 @@ land cover); the updates do not. The 1 m lidar comes from the USGS directly.
 ```bash
 lynch-forecast check -f places/lynch/forecast.yaml    # try every feed; where each point falls
 lynch-forecast setup -f places/lynch/forecast.yaml    # once: terrain, layers, 30-day warm-up, 1 m DEMs
-lynch-forecast serve                                  # keeps going: every hour, then the site published
+lynch-forecast serve                                  # keeps going: every 6 hours, then the site published
 lynch-forecast run                                    # one update now
 lynch-forecast design -f places/lynch/forecast.yaml   # the 10- and 20-year storms, once (design.yaml)
 lynch-forecast site                                   # only rebuild the site (public/)

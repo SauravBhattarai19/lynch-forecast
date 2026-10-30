@@ -128,7 +128,9 @@ nested: every duration from 10 minutes to 24 hours holds its Atlas 14 depth.
 
 Atlas 14 has no 20-year depth. It is read between the 10- and 25-year ones on
 the Gumbel scale. Both storms are mapped by HAND over the whole basin, as in the
-forecast, and by 2-D simulation at 1 m in four boxes along the creek:
+forecast, and by 2-D simulation at 4 m (the 1 m lidar averaged) in four boxes along the
+creek. At 1 m a storm took over 5 hours on a shared server; at 4 m the 2-D takes
+about a minute a box once its creeks are filled:
 
 - West branch at I-220 and Dixon Road;
 - Robinson Street to Ellis Avenue;

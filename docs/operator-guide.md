@@ -8,7 +8,8 @@ change on its own.
 ## What runs, and where
 
 One computer runs `lynch-forecast serve` all the time, as a service. It needs
-Linux or macOS (Windows: inside WSL), with internet. Every hour it does
+Linux or macOS (Windows: inside WSL), with internet. Every 6 hours
+(`every_minutes: 360`) it does
 this for each place listed in `places.yaml`:
 
 1. reads the rain stations;
@@ -19,9 +20,12 @@ this for each place listed in `places.yaml`:
 
 The site is a front page with every place, plus one page for each place.
 
-Each round of the Roshi Khola took about 2½ minutes on the current server,
-which is a large one. A smaller computer takes longer. That is fine as long as
-a round finishes well within the 30 minutes.
+Each round of Lynch Creek takes 30 to 60 minutes on the current server, a large
+one shared with other forecasts: the six 96-hour runs on the 10 m grid, then the
+1 m map of the whole basin. A smaller computer takes longer. That is fine as long
+as a round finishes well within the 6 hours. Do not run the design storms
+(`lynch-forecast design`) at the same time as a round on a busy computer: both
+then slow down many times over.
 
 ## Install (once)
 
