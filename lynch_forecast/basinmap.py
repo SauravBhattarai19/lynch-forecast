@@ -201,10 +201,10 @@ def draw(site, cfg, run_dir, out_dir, log=print):
         raise RuntimeError(f"boxes {', '.join(bad)} failed: "
                            + "; ".join(str(res[k]["error"]) for k in bad)[:300])
     wet = [b for b in boxes if not res[b["name"]]["dry"]]
-    return join_boxes(wet, work, out_dir, plan.get("grid"))
+    return join_boxes(wet, work, out_dir, plan.get("grid"), site.basin_map.method)
 
 
-def join_boxes(boxes, work, out_dir, grid=None):
+def join_boxes(boxes, work, out_dir, grid=None, method="2d"):
     """The cores of the boxes' maps → one map in *out_dir* → summary dict."""
     import geopandas as gpd
     import pandas as pd
@@ -228,18 +228,23 @@ def join_boxes(boxes, work, out_dir, grid=None):
     tr = from_origin(x0, y1, res, res)
     os.makedirs(out_dir, exist_ok=True)
     layers, extents, per_box = {}, [], []
-    for layer in ("flood_depth_max", "flood_velocity_max"):
+    # HAND maps have no velocity layer; 2-D maps have both.
+    names = [ly for ly in ("flood_depth_max", "flood_velocity_max")
+             if all(os.path.isfile(os.path.join(work, b["name"], ly + ".tif")) for b in boxes)]
+    for layer in names:
         out = np.full((h, w), np.nan, dtype="float32")
         for b in boxes:
             src_path = os.path.join(work, b["name"], layer + ".tif")
             cx0, cy0, cx1, cy1 = transform_bounds("EPSG:4326", crs, *b["core"], densify_pts=21)
             c0, c1 = max(0, int((cx0 - x0) // res)), min(w, int(math.ceil((cx1 - x0) / res)))
             r0_, r1_ = max(0, int((y1 - cy1) // res)), min(h, int(math.ceil((y1 - cy0) / res)))
-            part = np.full((h, w), np.nan, dtype="float32")
+            if c1 <= c0 or r1_ <= r0_:
+                continue
+            win = np.full((r1_ - r0_, c1 - c0), np.nan, dtype="float32")   # the core only
             with rasterio.open(src_path) as r:
-                reproject(rasterio.band(r, 1), part, src_nodata=r.nodata, dst_transform=tr,
+                reproject(rasterio.band(r, 1), win, src_nodata=r.nodata,
+                          dst_transform=from_origin(x0 + c0 * res, y1 - r0_ * res, res, res),
                           dst_crs=crs, dst_nodata=np.nan, resampling=Resampling.nearest)
-            win = part[r0_:r1_, c0:c1]
             tgt = out[r0_:r1_, c0:c1]
             take = np.isnan(tgt)                           # first box wins on a shared edge
             tgt[take] = win[take]
@@ -269,9 +274,10 @@ def join_boxes(boxes, work, out_dir, grid=None):
     else:
         with open(os.path.join(out_dir, "flood_extent_max.geojson"), "w") as f:
             json.dump({"type": "FeatureCollection", "features": []}, f)
-    depth, speed = layers["flood_depth_max"], layers["flood_velocity_max"]
+    depth = layers["flood_depth_max"]
+    speed = layers.get("flood_velocity_max", np.zeros_like(depth))
     wet = np.isfinite(depth) & (depth > 0)
-    summary = {"method": "2d", "boxes": per_box, "grid": grid, "cell_size_m": res,
+    summary = {"method": method, "boxes": per_box, "grid": grid, "cell_size_m": res,
                "flooded_km2": round(float(wet.sum() * res * res / 1e6), 3),
                "max_depth_m": round(float(np.nanmax(depth[wet])), 2) if wet.any() else 0.0,
                "max_speed_m_s": round(float(np.nanmax(np.nan_to_num(speed[wet]))), 2)
