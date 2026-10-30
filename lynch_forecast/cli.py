@@ -328,7 +328,8 @@ def _cmd_replay(args):
 
 def _cmd_design(args):
     from .design import run_design
-    s = run_design(_site(args), parallel=not args.serial, maps=not args.no_maps)
+    s = run_design(_site(args), parallel=not args.serial, maps=not args.no_maps,
+                   reuse=args.reuse, areas=not args.no_areas)
     for pt in s["points"]:
         print(f"  {pt['name']}: " + ", ".join(f"{k} {v['q']:.1f} m³/s" for k, v in pt["peaks"].items()))
     return 0
@@ -455,6 +456,10 @@ def build_parser():
                   _cmd_design)
     q.add_argument("--no-maps", action="store_true", help="only the runs, no flood maps")
     q.add_argument("--serial", action="store_true", help="run models in this process")
+    q.add_argument("--reuse", action="store_true",
+                   help="keep the storm runs that finished before (do not run them again)")
+    q.add_argument("--no-areas", action="store_true",
+                   help="no new 2-D maps: show those drawn before, and the basin map")
     q = with_file("status", "the last cycle and how fresh each station is", _cmd_status,
                   places=True)
     q.add_argument("--json", action="store_true", help="also print status.json")

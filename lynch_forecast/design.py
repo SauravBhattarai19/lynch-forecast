@@ -282,8 +282,27 @@ def draw_areas(site, areas, cfgs, dirs, log=print, pad_hours=None, margin_km=Non
     return done
 
 
-def run_design(site, log=print, parallel=True, maps=True):
-    """Run every design storm, draw its flood maps and write ``site/design/``."""
+def _ran(vdir):
+    """A storm run that finished: its flows and its flood record are there."""
+    return all(os.path.isfile(os.path.join(vdir, f)) for f in ("gauges.csv", "hydrograph.csv")) \
+        and os.path.isdir(os.path.join(vdir, "inundation"))
+
+
+def _drawn(dirs, areas):
+    """2-D maps already written → [(storm, area name, result)] (no new ones drawn)."""
+    out = []
+    for sid, vdir in dirs.items():
+        for a in areas:
+            d = os.path.join(vdir, "areas", slug(a.name))
+            if os.path.isfile(os.path.join(d, "flood_depth_max.tif")):
+                out.append((sid, a.name, {"ok": True, "method": a.method, "dir": d}))
+    return out
+
+
+def run_design(site, log=print, parallel=True, maps=True, reuse=False, areas=True):
+    """Run every design storm, draw its flood maps and write ``site/design/``.
+    *reuse*: keep storm runs that finished before; *areas* False: no new 2-D maps
+    (those already drawn are shown), only the basin map."""
     from . import cycle, models, rainfiles
     from .products import _flows, _iso, _point_list, area_map
     from .sources import basin_centre
@@ -339,7 +358,12 @@ def run_design(site, log=print, parallel=True, maps=True):
         log(f"  {s['name']}: {blocks.sum():.0f} mm ({blocks.sum() / 25.4:.2f} in) in {hours:g} h, "
             f"{hourly.max():.0f} mm in the wettest hour")
     log(f"  Running {len(jobs)} storm(s), {total:g} h each …")
-    results = models.run_many(jobs, site.workers, site.threads_per_run, parallel, log)
+    todo = {k: v for k, v in jobs.items()
+            if not (reuse and _ran(next(s["dir"] for s in storms if s["name"] == k)))}
+    if len(todo) < len(jobs):
+        log(f"  Kept the earlier run of: {', '.join(k for k in jobs if k not in todo)}")
+    results = models.run_many(todo, site.workers, site.threads_per_run, parallel, log) \
+        if todo else {}
     bad = [k for k, r in results.items() if not r["ok"]]
     if bad:
         raise RuntimeError("design runs failed: " + "; ".join(
@@ -352,7 +376,12 @@ def run_design(site, log=print, parallel=True, maps=True):
     if maps:
         cfgs = {s["id"]: jobs[s["name"]][0] for s in storms}
         dirs = {s["id"]: s["dir"] for s in storms}
-        done = draw_areas(site, design_areas(d), cfgs, dirs, log, d["pad_hours"], d["margin_km"])
+        if areas:
+            done = draw_areas(site, design_areas(d), cfgs, dirs, log, d["pad_hours"],
+                              d["margin_km"])
+        else:
+            done = _drawn(dirs, design_areas(d))
+            log(f"  Flood maps: no new 2-D maps; {len(done)} drawn before")
         if d.get("basin_map", True) and site.basin_map:
             for s in storms:
                 st = cycle.Status(datetime.utcnow())
