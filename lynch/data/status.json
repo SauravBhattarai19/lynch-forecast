@@ -1,0 +1,185 @@
+{
+ "cycle_utc": "2026-11-02 00:02",
+ "started_utc": "2026-11-02 00:02",
+ "steps": [
+  {
+   "step": "stations",
+   "ok": true,
+   "note": "no station reported in time: past rain estimated",
+   "utc": "2026-11-02 00:02:00"
+  },
+  {
+   "step": "forecasts",
+   "ok": true,
+   "note": "5 of 5",
+   "utc": "2026-11-02 00:02:00"
+  },
+  {
+   "step": "models",
+   "ok": true,
+   "note": "6 of 6 versions ran",
+   "utc": "2026-11-02 00:38:00"
+  },
+  {
+   "step": "products",
+   "ok": true,
+   "note": "",
+   "utc": "2026-11-02 00:45:00"
+  }
+ ],
+ "stations": {},
+ "forecasts": {
+  "NBM": {
+   "ok": true,
+   "issued_utc": "2026-11-02 00:02",
+   "points": 30,
+   "ends_utc": "2026-11-05 00:00",
+   "info": {
+    "api": "forecast",
+    "model": "ncep_nbm_conus",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "HRRR": {
+   "ok": true,
+   "issued_utc": "2026-11-02 00:02",
+   "points": 30,
+   "ends_utc": "2026-11-03 18:00",
+   "info": {
+    "api": "forecast",
+    "model": "ncep_hrrr_conus",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "GFS": {
+   "ok": true,
+   "issued_utc": "2026-11-02 00:02",
+   "points": 2,
+   "ends_utc": "2026-11-05 00:00",
+   "info": {
+    "api": "forecast",
+    "model": "gfs_global",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "ECMWF": {
+   "ok": true,
+   "issued_utc": "2026-11-02 00:02",
+   "points": 4,
+   "ends_utc": "2026-11-05 00:00",
+   "info": {
+    "api": "forecast",
+    "model": "ecmwf_ifs",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "ICON": {
+   "ok": true,
+   "issued_utc": "2026-11-02 00:02",
+   "points": 4,
+   "ends_utc": "2026-11-05 00:00",
+   "info": {
+    "api": "forecast",
+    "model": "icon_seamless",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  }
+ },
+ "versions": {
+  "NBM": {
+   "ok": true,
+   "seconds": 2195.1,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/nbm/run.log"
+  },
+  "HRRR": {
+   "ok": true,
+   "seconds": 308.9,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/hrrr/run.log"
+  },
+  "GFS": {
+   "ok": true,
+   "seconds": 1327.7,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/gfs/run.log"
+  },
+  "ECMWF": {
+   "ok": true,
+   "seconds": 1505.8,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/ecmwf/run.log"
+  },
+  "ICON": {
+   "ok": true,
+   "seconds": 2048.1,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/icon/run.log"
+  },
+  "No more rain": {
+   "ok": true,
+   "seconds": 321.5,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/no_more_rain/run.log"
+  }
+ },
+ "areas": {
+  "Every creek (1 m)": {
+   "ok": true,
+   "dir": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261102T0002Z/nbm/areas/every_creek_1_m",
+   "basin": true,
+   "seconds": 384.5,
+   "boxes": 14
+  }
+ },
+ "ok": true,
+ "t_obs_utc": "2026-11-02 00:00",
+ "stations_reporting": [],
+ "gauges": {
+  "Lynch Creek at Jackson (USGS 02486100)": {
+   "ok": true,
+   "lat": 32.2847222,
+   "lon": -90.215,
+   "gauge": "LYNCH CREEK AT JACKSON, MS",
+   "site": "02486100",
+   "parameter": "00065",
+   "last_report_utc": "2026-11-01 23:15"
+  }
+ },
+ "run_start_utc": "2026-11-01 00:00",
+ "run_end_utc": "2026-11-05 00:00",
+ "restart_from": "state_20261101T0000Z.npz",
+ "states_kept": [
+  "2026-11-01 01:00",
+  "2026-11-01 02:00",
+  "2026-11-01 03:00",
+  "2026-11-01 04:00",
+  "2026-11-01 05:00",
+  "2026-11-01 06:00",
+  "2026-11-01 07:00",
+  "2026-11-01 08:00",
+  "2026-11-01 09:00",
+  "2026-11-01 10:00",
+  "2026-11-01 11:00",
+  "2026-11-01 12:00",
+  "2026-11-01 13:00",
+  "2026-11-01 14:00",
+  "2026-11-01 15:00",
+  "2026-11-01 16:00",
+  "2026-11-01 17:00",
+  "2026-11-01 18:00",
+  "2026-11-01 19:00",
+  "2026-11-01 20:00",
+  "2026-11-01 21:00",
+  "2026-11-01 22:00",
+  "2026-11-01 23:00",
+  "2026-11-02 00:00"
+ ],
+ "seconds": 2602.4,
+ "finished_utc": "2026-11-02 00:45"
+}
