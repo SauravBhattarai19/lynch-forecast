@@ -1,0 +1,185 @@
+{
+ "cycle_utc": "2026-11-14 13:42",
+ "started_utc": "2026-11-14 13:42",
+ "steps": [
+  {
+   "step": "stations",
+   "ok": true,
+   "note": "no station reported in time: past rain estimated",
+   "utc": "2026-11-14 13:42:00"
+  },
+  {
+   "step": "forecasts",
+   "ok": true,
+   "note": "5 of 5",
+   "utc": "2026-11-14 13:43:00"
+  },
+  {
+   "step": "models",
+   "ok": true,
+   "note": "6 of 6 versions ran",
+   "utc": "2026-11-14 13:58:00"
+  },
+  {
+   "step": "products",
+   "ok": true,
+   "note": "",
+   "utc": "2026-11-14 14:04:00"
+  }
+ ],
+ "stations": {},
+ "forecasts": {
+  "NBM": {
+   "ok": true,
+   "issued_utc": "2026-11-14 13:42",
+   "points": 30,
+   "ends_utc": "2026-11-17 14:00",
+   "info": {
+    "api": "forecast",
+    "model": "ncep_nbm_conus",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "HRRR": {
+   "ok": true,
+   "issued_utc": "2026-11-14 13:42",
+   "points": 30,
+   "ends_utc": "2026-11-16 06:00",
+   "info": {
+    "api": "forecast",
+    "model": "ncep_hrrr_conus",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "GFS": {
+   "ok": true,
+   "issued_utc": "2026-11-14 13:42",
+   "points": 2,
+   "ends_utc": "2026-11-17 14:00",
+   "info": {
+    "api": "forecast",
+    "model": "gfs_global",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "ECMWF": {
+   "ok": true,
+   "issued_utc": "2026-11-14 13:42",
+   "points": 4,
+   "ends_utc": "2026-11-17 14:00",
+   "info": {
+    "api": "forecast",
+    "model": "ecmwf_ifs",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  },
+  "ICON": {
+   "ok": true,
+   "issued_utc": "2026-11-14 13:43",
+   "points": 4,
+   "ends_utc": "2026-11-17 14:00",
+   "info": {
+    "api": "forecast",
+    "model": "icon_seamless",
+    "run_utc": null,
+    "attribution": "Weather data by Open-Meteo.com (CC BY 4.0)"
+   }
+  }
+ },
+ "versions": {
+  "NBM": {
+   "ok": true,
+   "seconds": 329.2,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/nbm/run.log"
+  },
+  "HRRR": {
+   "ok": true,
+   "seconds": 317.9,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/hrrr/run.log"
+  },
+  "GFS": {
+   "ok": true,
+   "seconds": 318.9,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/gfs/run.log"
+  },
+  "ECMWF": {
+   "ok": true,
+   "seconds": 772.5,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/ecmwf/run.log"
+  },
+  "ICON": {
+   "ok": true,
+   "seconds": 899.4,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/icon/run.log"
+  },
+  "No more rain": {
+   "ok": true,
+   "seconds": 324.5,
+   "error": null,
+   "log": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/no_more_rain/run.log"
+  }
+ },
+ "areas": {
+  "Every creek (1 m)": {
+   "ok": true,
+   "dir": "/home/richapokhrel/lynch-forecast/places/lynch/cycles/20261114T1342Z/nbm/areas/every_creek_1_m",
+   "basin": true,
+   "seconds": 378.8,
+   "boxes": 14
+  }
+ },
+ "ok": true,
+ "t_obs_utc": "2026-11-14 13:40",
+ "stations_reporting": [],
+ "gauges": {
+  "Lynch Creek at Jackson (USGS 02486100)": {
+   "ok": true,
+   "lat": 32.2847222,
+   "lon": -90.215,
+   "gauge": "LYNCH CREEK AT JACKSON, MS",
+   "site": "02486100",
+   "parameter": "00065",
+   "last_report_utc": "2026-11-14 13:15"
+  }
+ },
+ "run_start_utc": "2026-11-13 13:00",
+ "run_end_utc": "2026-11-17 14:00",
+ "restart_from": "state_20261113T1300Z.npz",
+ "states_kept": [
+  "2026-11-13 14:00",
+  "2026-11-13 15:00",
+  "2026-11-13 16:00",
+  "2026-11-13 17:00",
+  "2026-11-13 18:00",
+  "2026-11-13 19:00",
+  "2026-11-13 20:00",
+  "2026-11-13 21:00",
+  "2026-11-13 22:00",
+  "2026-11-13 23:00",
+  "2026-11-14 00:00",
+  "2026-11-14 01:00",
+  "2026-11-14 02:00",
+  "2026-11-14 03:00",
+  "2026-11-14 04:00",
+  "2026-11-14 05:00",
+  "2026-11-14 06:00",
+  "2026-11-14 07:00",
+  "2026-11-14 08:00",
+  "2026-11-14 09:00",
+  "2026-11-14 10:00",
+  "2026-11-14 11:00",
+  "2026-11-14 12:00",
+  "2026-11-14 13:00"
+ ],
+ "seconds": 1288.3,
+ "finished_utc": "2026-11-14 14:04"
+}
